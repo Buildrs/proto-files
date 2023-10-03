@@ -1,0 +1,48 @@
+syntax = "proto3";
+package company_data;
+import "google/protobuf/empty.proto";
+
+
+message RegisterRequest{
+    string ProcessId = 1;
+    string Id = 2;
+    string Email = 3;
+    string FirstName = 4;
+    string LastName = 5;
+    string CompanyName = 6;
+    optional string Website = 7;
+    optional string EthWalletAddress = 8;
+}
+
+message GetByIdRequest{
+    string Id = 1;
+}
+
+message GetByIdResponse{
+    optional CompanyDataModel Model = 1;
+}
+
+message CompanyDataModel{
+    string Id =1;
+    string Email = 2;
+    string FirstName =3;
+    string LastName = 4;
+    string CompanyName = 5;
+    optional string WebSite = 7;
+    optional string EthWalletAddress = 8;
+}
+
+
+message GetTopRecordsRequest{
+    int64 SkipRecords = 1;
+    int64 MaxRecordsAmount = 2;
+}
+
+service CompanyDataGrpcService {
+    rpc Register(RegisterRequest) returns (google.protobuf.Empty);   
+    rpc GetById(GetByIdRequest) returns (GetByIdResponse);
+
+    rpc GetTopRecords(GetTopRecordsRequest) returns (stream CompanyDataModel);
+
+    rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
